@@ -4,6 +4,8 @@
   "description": "Cross-language Playwright APIRequestContext testing suite for Restful-Booker",
   "scripts": {
     "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
     "test:health": "playwright test tests/health.spec.ts",
     "test:booking": "playwright test tests/booking-smoke.spec.ts",
     "test:parity": "playwright test tests/contract-parity.spec.ts"
