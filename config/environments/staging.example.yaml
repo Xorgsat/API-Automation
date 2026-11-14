@@ -1,0 +1,11 @@
+environment: staging
+base_url: https://staging.restful-booker.example.com
+timeout: 20.0
+max_retries: 3
+retry_backoff: 1.0
+auth:
+  username: staging_admin
+  password: staging_secure_password_replace_in_secrets
+logging:
+  level: INFO
+  mask_secrets: true

@@ -1,0 +1,96 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-api-quality-engineering"
+version = "1.0.0"
+description = "Senior SDET API Quality Engineering Framework built with Python and pytest"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Senior SDET & Test Architect"}
+]
+keywords = [
+    "api-testing",
+    "test-automation",
+    "pytest",
+    "restful-booker",
+    "quality-engineering",
+    "pydantic",
+    "sdet",
+    "contract-testing"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Testing",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "requests>=2.31.0",
+    "pydantic>=2.6.0",
+    "jsonschema>=4.21.0",
+    "python-dotenv>=1.0.0",
+    "pyyaml>=6.0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-xdist>=3.5.0",
+    "pytest-html>=4.1.0",
+    "pytest-metadata>=3.1.0",
+    "ruff>=0.3.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --strict-markers --durations=10"
+markers = [
+    "smoke: Quick health and smoke validation tests",
+    "functional: Core CRUD and business logic tests",
+    "authentication: Authentication and credential negotiation tests",
+    "security: Authorization and permission enforcement tests",
+    "negative: Error handling and malformed request tests",
+    "boundary: Boundary value analysis tests",
+    "contract: API schema and contract conformance tests",
+    "idempotency: HTTP verb semantics and idempotency tests",
+    "concurrency: Multi-threaded and parallel operation tests",
+    "performance: Lightweight API latency and timing tests",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501", # line too long (handled by formatter)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/*" = ["E402"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["api_framework"]

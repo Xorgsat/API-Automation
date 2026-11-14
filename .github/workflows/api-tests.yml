@@ -1,0 +1,92 @@
+name: API Quality Engineering - CI Validation
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+  workflow_dispatch:
+
+jobs:
+  lint-and-static-analysis:
+    name: Lint & Static Code Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Linting Tools
+        run: |
+          pip install ruff
+
+      - name: Run Ruff Lint Checks
+        run: |
+          ruff check .
+
+  python-smoke-and-contracts:
+    name: Python Smoke & Contract Suite
+    needs: lint-and-static-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Verify Environment Connectivity
+        run: |
+          python scripts/check_environment.py
+
+      - name: Run Smoke & Contract Tests
+        run: |
+          pytest -m "smoke or contract" --html=reports/pr-report.html --self-contained-html --junitxml=reports/junit.xml
+
+      - name: Upload Test Report Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-test-reports
+          path: reports/
+
+  playwright-api-smoke:
+    name: Playwright TypeScript API Parity
+    needs: lint-and-static-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Playwright Dependencies
+        working-directory: playwright-api
+        run: |
+          npm ci
+
+      - name: Run Playwright API Suite
+        working-directory: playwright-api
+        run: |
+          npx playwright test
+
+      - name: Upload Playwright Report Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-test-reports
+          path: playwright-api/playwright-report/

@@ -1,0 +1,16 @@
+{
+  "name": "playwright-api-testing",
+  "version": "1.0.0",
+  "description": "Cross-language Playwright APIRequestContext testing suite for Restful-Booker",
+  "scripts": {
+    "test": "playwright test",
+    "test:health": "playwright test tests/health.spec.ts",
+    "test:booking": "playwright test tests/booking-smoke.spec.ts",
+    "test:parity": "playwright test tests/contract-parity.spec.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}

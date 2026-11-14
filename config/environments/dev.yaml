@@ -1,0 +1,11 @@
+environment: dev
+base_url: https://restful-booker.herokuapp.com
+timeout: 15.0
+max_retries: 2
+retry_backoff: 0.5
+auth:
+  username: admin
+  password: password123
+logging:
+  level: INFO
+  mask_secrets: true
