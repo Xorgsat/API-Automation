@@ -61,3 +61,11 @@ playwright-api/.cache/
 .idea/
 .vscode/
 *.swp
+
+# Local developer launch scripts & files
+run_local.sh
+launch_commands.sh
+local_commands.sh
+local_commands.md
+*.local.*
+
